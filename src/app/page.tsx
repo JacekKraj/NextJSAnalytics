@@ -1,5 +1,10 @@
+import SessionProvider from "@/components/SessionProvider";
+
 export default function Home() {
   return (
-   <div>NextJS analytics</div>
-  )
+    <div>
+      NextJS analytics
+      <SessionProvider />
+    </div>
+  );
 }
