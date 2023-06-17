@@ -22,7 +22,7 @@ const showAd = ({ width, height, adSlotId }: AdvertisementProps & AdSlot) => {
 
     // Define size mapping explained here: https://developers.google.com/publisher-tag/guides/ad-sizes#responsive_ads
     const mapping = googletag.sizeMapping().addSize([960, 540], [300, 250]).addSize([0, 0], []).build();
-    googleAdSlot?.defineSizeMapping(mapping);
+    // googleAdSlot?.defineSizeMapping(mapping);
 
     // Request and render an ad for the slot
     googletag.display(adSlotId);
