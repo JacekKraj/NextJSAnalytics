@@ -3,9 +3,8 @@ import { FeatureFlags, sendTrackEvent, TrackEventType } from "@/utils";
 import { getPosts } from "@/utils/blogPostApi";
 import { PostsListItem } from "@/components/PostsListItem";
 import { Post } from "@/types";
-import { Advertisement } from "@/components";
-import { useExperiment, useFeatureIsOn, useFeatureValue } from "@growthbook/growthbook-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useFeatureValue } from "@growthbook/growthbook-react";
 
 interface PostsProps {
   posts: Post[];

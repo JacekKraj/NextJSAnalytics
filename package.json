@@ -26,6 +26,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/google-publisher-tag": "^1.20230410.0"
+    "@types/google-publisher-tag": "^1.20230410.0",
+    "@types/gtag.js": "^0.0.12"
   }
 }

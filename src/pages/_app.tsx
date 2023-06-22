@@ -1,11 +1,11 @@
 ﻿import { useEffect } from "react";
 import Cookies from "js-cookie";
-import { FeatureFlags, growthbook, initializeGrowthbook, sendTrackEvent, TrackEventType } from "@/utils";
+import { growthbook, initializeGrowthbook, sendTrackEvent, TrackEventType } from "@/utils";
 import Script from "next/script";
 import { AppProps } from "next/app";
 import { cookieConsentScript, listenConsentChange } from "@/utils/cookies";
 import { GoogleAdsContextProvider, googleAnalyticsScript, googleTagManagerScript, useGoogleAds } from "@/utils/google";
-import { GrowthBookProvider, useFeatureValue } from "@growthbook/growthbook-react";
+import { GrowthBookProvider } from "@growthbook/growthbook-react";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { adsAreInitialized, initializeAds } = useGoogleAds();
@@ -16,9 +16,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   useEffect(() => {
-    document.addEventListener("consentChange", listenConsentChange);
+    // any because of incompatible types between Event and CustomEvent
+    document.addEventListener<any>("consentChange", listenConsentChange);
     return () => {
-      document.removeEventListener("consentChange", listenConsentChange);
+      document.removeEventListener<any>("consentChange", listenConsentChange);
     };
   }, []);
 
@@ -33,13 +34,17 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       {/* Start setup Google Analytics */}
-      <Script strategy="afterInteractive" async src="https://www.googletagmanager.com/gtag/js?id=G-E5CQMYKSER"></Script>
       <Script
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-E5CQMYKSER"
+      ></Script>
+      <Script
+        strategy="beforeInteractive"
         id="google-analytics"
         dangerouslySetInnerHTML={{ __html: googleAnalyticsScript }}
       />
-      {/* End setup Google Analytics */}
+      {/*End setup Google Analytics*/}
       {/* Start initialize Google Tag Manager */}
       <Script id="google-tag-manager" dangerouslySetInnerHTML={{ __html: googleTagManagerScript }} />
       {/* End initialize Google Tag Manager */}
@@ -51,7 +56,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       {/* Start setup Google Ads */}
       <Script
         type="text/plain"
-        class="_iub_cs_activate"
+        className="_iub_cs_activate"
         data-iub-purposes="5"
         data-suppressedsrc="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
       />

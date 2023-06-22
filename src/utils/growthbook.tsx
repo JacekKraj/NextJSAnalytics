@@ -1,4 +1,5 @@
 ﻿import { GrowthBook } from "@growthbook/growthbook";
+import { getGoogleAnalyticsClientId } from "@/utils/cookies";
 
 const GROWTHBOOK_CLIENT_KEY = "sdk-UE7jZytifuAEM1Sd";
 const GROWTHBOOK_API_HOST = "https://cdn.growthbook.io";
@@ -21,14 +22,6 @@ export const growthbook = new GrowthBook({
 export const initializeGrowthbook = () => {
   growthbook.loadFeatures();
 
-  const clientId = document.cookie
-    .match(/_ga=(.+?);/)[1]
-    .split(".")
-    .slice(-2)
-    .join(".");
-
-  console.log(window.gtag);
-
   // values below should contain real targeting attribute values, to enable
   // target feature flags based on user attributes
   growthbook.setAttributes({
@@ -41,7 +34,7 @@ export const initializeGrowthbook = () => {
     browser: "foo",
     url: "foo",
     attributes: {
-      clientId: "3372",
+      clientId: getGoogleAnalyticsClientId(),
     },
   });
 };

@@ -22,14 +22,14 @@ const getCookieConsentStatus = (request: NextRequest) => {
 export const initializeCookies = (request: NextRequest, response: NextResponse) => {
   const consentStatus = getCookieConsentStatus(request);
   const sessionId = request.cookies.get(SESSION_ID)?.value || uuidv4();
-  let expirationDate: Date | number;
+  let expirationDate: Date | undefined;
 
   if (consentStatus === CookieConsentStatus.Accepted) {
     expirationDate = new Date(new Date().getTime() + 30 * 60000); // 30 minutes
   }
 
   if (consentStatus === CookieConsentStatus.Pending) {
-    expirationDate = 0; // session long
+    expirationDate = undefined;
   }
 
   if (consentStatus !== CookieConsentStatus.Rejected) {
@@ -49,6 +49,16 @@ export const listenConsentChange = (e: CustomEvent<{ consentWasGiven: boolean }>
   } else {
     Cookies.remove(SESSION_ID);
   }
+};
+
+export const getGoogleAnalyticsClientId = () => {
+  const cookie = document.cookie.match(/_ga=(.+?);/);
+
+  if (cookie instanceof Array) {
+    return cookie[1].split(".").slice(-2).join(".");
+  }
+
+  return "UNKNOWN";
 };
 
 export const cookieConsentScript = `
